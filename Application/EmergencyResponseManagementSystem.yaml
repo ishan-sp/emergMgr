@@ -1,0 +1,295 @@
+"openapi": "3.0.3"
+"info":
+  "title": "RVCE Project - Emergency Response Management System (ERMS)"
+  "description": "This is a Emergency Response Management System Server based on the OpenAPI 3.0 specification."
+  "termsOfService": "http://swagger.io/terms/"
+  "contact":
+    "email": "principal@rvce.edu.in"
+  "license":
+    "name": "Apache 2.0"
+    "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+  "version": "1"
+"externalDocs":
+  "description": "Find out more about Emergency Response Management System"
+  "url": "http://swagger.io"
+"servers":
+  - "url": "https://emergency-response-management-system.rvce.edu.in/"
+"tags":
+  - "name": "ERMS"
+    "description": "Everything about Emergency Response Management System"
+
+"paths":
+  "/emergency-request/raise":
+    "post":
+      "tags":
+        - "ERMS"
+      "summary": "Raise an Emergency Request"
+      "description": "Raise an Emergency Request by the Client"
+      "operationId": "raiseEmergencyRequest"
+      "requestBody":
+        "description": "Raise an Emergency Request"
+        "content":
+          "application/json":
+            "schema":
+              $ref: '#/components/schemas/EmergencyRequest'
+        "required": true
+      "responses":
+        "201":
+          "description": "Successful operation to a valid request"
+          "content":
+            "application/json":
+              "schema":
+                $ref: '#/components/schemas/EmergencyRequest'
+        "400":
+          "description": "Bad Request"
+        "500":
+          "description": "Internal Server Error"
+        "503":
+          "description": "Service Unavailable"
+
+  "/emergency-request/{id}/assign/":
+    "post":
+      "tags":
+        - "ERMS"
+      "summary": "Assign an Emergency Request to a Personnel"
+      "operationId": "assignEmergencyRequest"
+      "parameters":
+        - "name": "id"
+          "in": "path"
+          "description": "ID of the Emergency Request"
+          "required": true
+          "schema":
+            "type": "integer"
+            "format": "int64"
+      "requestBody":
+        "description": "Assign an Emergency Request"
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "properties":
+                "personnel-assigned":
+                  "description": "Personnel to whom this Emergency Request is assigned to."
+                  "type": "integer"
+                  "format": "int64"
+        "required": true
+      "responses":
+        "201":
+          "description": "Successful operation to a valid request"
+          "content":
+            "application/json":
+              "schema":
+                $ref: '#/components/schemas/EmergencyRequest'
+        "400":
+          "description": "Bad Request"
+        "500":
+          "description": "Internal Server Error"
+        "503":
+          "description": "Service Unavailable"
+
+  "/emergency-request/{id}/resolve/":
+    "post":
+      "tags":
+        - "ERMS"
+      "summary": "Resolve the Emergency Request"
+      "operationId": "resolveEmergencyRequest"
+      "parameters":
+        - "name": "id"
+          "in": "path"
+          "description": "ID of the Emergency Request"
+          "required": true
+          "schema":
+            "type": "integer"
+            "format": "int64"
+      "responses":
+        "201":
+          "description": "Successful operation to a valid request"
+          "content":
+            "application/json":
+              "schema":
+                $ref: '#/components/schemas/EmergencyRequest'
+        "400":
+          "description": "Bad Request"
+        "500":
+          "description": "Internal Server Error"
+        "503":
+          "description": "Service Unavailable"
+
+  "/emergency-request/personnels/":
+    "get":
+      "tags":
+        - "ERMS"
+      "summary": "Get all Personnels serving Emergency Requests"
+      "operationId": "getPersonnels"
+      "responses":
+        "200":
+          "description": "Successful operation to a valid request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  $ref: '#/components/schemas/Personnels'
+        "400":
+          "description": "Bad Request"
+        "500":
+          "description": "Internal Server Error"
+        "503":
+          "description": "Service Unavailable"
+
+  "/emergency-request/{status}":
+    "get":
+      "tags":
+        - "ERMS"
+      "summary": "Retrieve a collection of Emergency Request(s)"
+      "operationId": "getEmergencyRequestsByStatus"
+      "parameters":
+        - name: status
+          in: path
+          description: "Status value that need to be considered for filter"
+          required: true
+          schema:
+            type: string
+            enum: [open, assigned, resolved]
+      "responses":
+        "200":
+          "description": "Successful Operation"
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  $ref: '#/components/schemas/EmergencyRequest'
+        "400":
+          "description": "Bad Request"
+        "500":
+          "description": "Internal Server Error"
+        "503":
+          "description": "Service Unavailable"
+
+  "/emergency-request/{id}":
+    "get":
+      "tags":
+        - "ERMS"
+      "summary": "Find Emergency Request by ID"
+      "description": "Returns a single Emergency Request"
+      "operationId": "getEmergencyRequestsById"
+      "parameters":
+        - "name": "id"
+          "in": "path"
+          "description": "ID of the Emergency Request"
+          "required": true
+          "schema":
+            "type": "integer"
+            "format": "int64"
+      "responses":
+        "200":
+          "description": "successful operation to a valid request"
+          "content":
+            "application/json":
+              "schema":
+                $ref: '#/components/schemas/EmergencyRequest'
+        "400":
+          "description": "Bad Request"
+        "404":
+          "description": "Alert not found"
+        "500":
+          "description": "Internal Server Error"
+        "503":
+          "description": "Service Unavailable"
+    "delete":
+      "tags":
+        - "ERMS"
+      "summary": "Deletes an Emergency Request"
+      "operationId": "deleteEmergencyRequestById"
+      "parameters":
+        - "name": "id"
+          "in": "path"
+          "description": "ID of the Emergency Request"
+          "required": true
+          "schema":
+            "type": "integer"
+            "format": "int64"
+      "responses":
+        "400":
+          "description": "Bad Request"
+        "404":
+          "description": "Alert not found"
+        "500":
+          "description": "Internal Server Error"
+        "503":
+          "description": "Service Unavailable"
+
+"components":
+  "schemas":
+    "EmergencyRequest":
+      "type": "object"
+      "properties":
+        "id":
+          "type": "integer"
+          "format": "int64"
+          "example": 198772
+        "description":
+          "type": "string"
+          "format": "date-time"
+        "type":
+            $ref: '#/components/schemas/EmergencyRequestType'
+        "status":
+            $ref: '#/components/schemas/EmergencyRequestStatus'
+        "created-time":
+          "type": "string"
+          "format": "date-time"
+        "resolved-time":
+          "type": "string"
+          "format": "date-time"
+        "personnel-assigned":
+          "description": "Personnel to whom this Emergency Request is assigned to."
+          "type": "string"
+    "Personnels":
+      "type": "object"
+      "properties":
+        "firstName":
+          "type": "string"
+          "example": "Ishan"
+        "middleName":
+          "type": "string"
+          "example": "Shekhar"
+        "lastName":
+          "type": "string"
+          "example": "Prasad"
+        "email":
+          "type": "string"
+          "example": "ishanshekharprasad@email.com"
+        "address":
+            $ref: '#/components/schemas/Address'
+    "Address":
+      "type": "object"
+      "properties":
+        "street":
+          "type": "string"
+          "example": "RV Vidyanikethan Post, Mysore Road"
+        "city":
+          "type": "string"
+          "example": "Bengaluru"
+        "state":
+          "type": "string"
+          "example": "KA"
+        "zip":
+          "type": "string"
+          "example": "560059"
+    "EmergencyRequestType":
+      "type": "string"
+      "enum":
+        - "fire"
+        - "flood"
+        - "crime"
+        - "accident"
+        - "others"
+    "EmergencyRequestStatus":
+      "type": "string"
+      "description": "Emergency Request Status"
+      "example": "open"
+      "enum":
+        - "open"
+        - "assigned"
+        - "resolved"
